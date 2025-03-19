@@ -115,7 +115,7 @@ export default class Player extends Phaser.GameObjects.Sprite {
 
 		this.scene.addExplosion(this.x, this.y);
 
-		this.destroy(); // destroy sprite so it is no longer updated
+		this.destroy(true); // destroy sprite so it is no longer updated
 	}
 
 	/* END-USER-CODE */
