@@ -1,16 +1,17 @@
 
 // You can write more code here
-import EnemyBullet from "../prefabs/EnemyBullet.js";
-import EnemyFlying from "../prefabs/EnemyFlying.js";
-import Explosion from "../prefabs/Explosion.js";
-import PlayerBullet from "../prefabs/PlayerBullet.js";
 
 /* START OF COMPILED CODE */
 
 import Player from "../prefabs/Player.js";
 import UIText from "../prefabs/UIText.js";
-import EnemyPaths from "../prefabs/EnemyPaths.js";
+
 /* START-USER-IMPORTS */
+import EnemyBullet from "../prefabs/EnemyBullet.js";
+import EnemyFlying from "../prefabs/EnemyFlying.js";
+import Explosion from "../prefabs/Explosion.js";
+import PlayerBullet from "../prefabs/PlayerBullet.js";
+import EnemyPaths from "../prefabs/EnemyPaths.js";
 /* END-USER-IMPORTS */
 
 export default class Game extends Phaser.Scene {
@@ -107,7 +108,7 @@ export default class Game extends Phaser.Scene {
 		// tutorialText
 		const tutorialText = new UIText(this, 640, 360);
 		tutorialText.visible = true;
-		tutorialText.text = "Press space!";
+		tutorialText.text = "Press space to start";
 		tutorialText.setStyle({  });
 		uiLayer.add(tutorialText);
 
@@ -258,6 +259,22 @@ export default class Game extends Phaser.Scene {
 		this.gameStarted = false;
 
 		this.gameOverText.setVisible(true);
+
+		this.input.keyboard.on("keydown", e => {
+
+			if (e.keyCode === Phaser.Input.Keyboard.KeyCodes.SPACE) {
+
+				this.cameras.main.fadeOut(500, 0, 0, 0, (c, p) => {
+
+					if (p === 1) {
+
+						this.input.keyboard.off("keydown");
+						
+						this.scene.start("Game");
+					}
+				});
+			}
+		});
 	}
 
 	initInput() {

@@ -70,7 +70,7 @@
                     "x": 640,
                     "y": 360,
                     "visible": true,
-                    "text": "Press space!"
+                    "text": "Press space to start"
                 },
                 {
                     "prefabId": "cf9e4651-6888-4bcc-85c8-36edfead8095",
