@@ -22,14 +22,6 @@ export default class EnemyFlying extends Phaser.Physics.Arcade.Sprite {
 
 	/* START-USER-CODE */
 
-	// path coordinates for enemy to follow
-	paths = [
-		[[200, -50], [1080, 160], [200, 340], [1080, 520], [200, 700], [1080, 780]],
-		[[-50, 200], [1330, 200], [1330, 400], [-50, 400], [-50, 600], [1330, 600]],
-		[[-50, 360], [640, 50], [1180, 360], [640, 670], [50, 360], [640, 50], [1180, 360], [640, 670], [-50, 360]],
-		[[1330, 360], [640, 50], [50, 360], [640, 670], [1180, 360], [640, 50], [50, 360], [640, 670], [1330, 360]],
-	]
-
 	// enemy health
 	health = 1;
 
@@ -124,9 +116,7 @@ export default class EnemyFlying extends Phaser.Physics.Arcade.Sprite {
 		this.scene.fireEnemyBullet(this.x, this.y, this.power);
 	}
 
-	initPath(pathId, speed) {
-
-		const points = this.paths[pathId];
+	initPath(points, speed) {
 
 		this.path = new Phaser.Curves.Spline(points);
 

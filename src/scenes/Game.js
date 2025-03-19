@@ -9,6 +9,7 @@ import PlayerBullet from "../prefabs/PlayerBullet.js";
 
 import Player from "../prefabs/Player.js";
 import UIText from "../prefabs/UIText.js";
+import EnemyPaths from "../prefabs/EnemyPaths.js";
 /* START-USER-IMPORTS */
 /* END-USER-IMPORTS */
 
@@ -157,6 +158,7 @@ export default class Game extends Phaser.Scene {
 		this.editorCreate();
 
 		this.initVariables();
+
 		this.initInput();
 	}
 
@@ -235,7 +237,10 @@ export default class Game extends Phaser.Scene {
 	addEnemy(shipId, pathId, speed, power) {
 
         const enemy = new EnemyFlying(this);
-		enemy.initEnemy(pathId, speed, power, shipId);
+
+		const points = new EnemyPaths(this).buildPoints(pathId);
+
+		enemy.initEnemy(points, speed, power, shipId);
 
         this.enemyLayer.add(enemy);
     }
