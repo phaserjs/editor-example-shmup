@@ -91,8 +91,6 @@ export default class EnemyFlying extends Phaser.Physics.Arcade.Sprite {
 
 		this.health -= damage;
 
-		console.log("Enemy hit! Health: " + this.health);
-
 		if (this.health <= 0) {
 
 			this.die();

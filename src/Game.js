@@ -7,8 +7,8 @@ import PlayerBullet from "./prefabs/PlayerBullet.js";
 
 /* START OF COMPILED CODE */
 
-import Player from "./prefabs/Player.js";
 import UIText from "./prefabs/UIText.js";
+import Player from "./prefabs/Player.js";
 /* START-USER-IMPORTS */
 /* END-USER-IMPORTS */
 
@@ -19,14 +19,20 @@ export default class Game extends Phaser.Scene {
 
 		/** @type {Phaser.Tilemaps.TilemapLayer} */
 		this.groundLayer;
-		/** @type {Player} */
-		this.player;
 		/** @type {UIText} */
 		this.tutorialText;
 		/** @type {UIText} */
 		this.scoreText;
 		/** @type {UIText} */
 		this.gameOverText;
+		/** @type {Phaser.GameObjects.Layer} */
+		this.enemyBulletLayer;
+		/** @type {Phaser.GameObjects.Layer} */
+		this.enemyLayer;
+		/** @type {Phaser.GameObjects.Layer} */
+		this.playerBulletLayer;
+		/** @type {Player} */
+		this.player;
 		/** @type {Phaser.Tilemaps.Tilemap} */
 		this.map;
 
@@ -81,10 +87,6 @@ export default class Game extends Phaser.Scene {
 		// groundLayer
 		const groundLayer = map.createLayer("groundLayer", ["tiles"], 0, -320);
 
-		// player
-		const player = new Player(this, 640, 620);
-		this.add.existing(player);
-
 		// uiLayer
 		const uiLayer = this.add.layer();
 
@@ -109,11 +111,36 @@ export default class Game extends Phaser.Scene {
 		gameOverText.setStyle({  });
 		uiLayer.add(gameOverText);
 
+		// enemyBulletLayer
+		const enemyBulletLayer = this.add.layer();
+
+		// enemyLayer
+		const enemyLayer = this.add.layer();
+
+		// playerBulletLayer
+		const playerBulletLayer = this.add.layer();
+
+		// player
+		const player = new Player(this, 640, 620);
+		this.add.existing(player);
+
+		// player_vs_enemy_bullets
+		this.physics.add.overlap(player, enemyBulletLayer.list, this.hitPlayer, undefined, this);
+
+		// player_bullets_vs_enemies
+		this.physics.add.overlap(playerBulletLayer.list, enemyLayer.list, this.hitEnemy, undefined, this);
+
+		// player_vs_enemies
+		this.physics.add.overlap(player, enemyLayer.list, this.hitPlayer, undefined, this);
+
 		this.groundLayer = groundLayer;
-		this.player = player;
 		this.tutorialText = tutorialText;
 		this.scoreText = scoreText;
 		this.gameOverText = gameOverText;
+		this.enemyBulletLayer = enemyBulletLayer;
+		this.enemyLayer = enemyLayer;
+		this.playerBulletLayer = playerBulletLayer;
+		this.player = player;
 		this.map = map;
 
 		this.events.emit("scene-awake");
@@ -125,33 +152,12 @@ export default class Game extends Phaser.Scene {
 	/** @type {Phaser.Types.Input.Keyboard.CursorKeys} */
 	cursors;
 
-	/** @type {Phaser.GameObjects.Group} */
-	enemyGroup;
-
-	/** @type {Phaser.GameObjects.Group} */
-	enemyBulletGroup;
-
-	/** @type {Phaser.GameObjects.Group} */
-	playerBulletGroup;
-
 	create() {
 
 		this.editorCreate();
 
 		this.initVariables();
 		this.initInput();
-		this.initPhysics();
-	}
-
-	initPhysics() {
-
-		this.enemyGroup = this.add.group();
-		this.enemyBulletGroup = this.add.group();
-		this.playerBulletGroup = this.add.group();
-
-		this.physics.add.overlap(this.player, this.enemyBulletGroup, this.hitPlayer, null, this);
-		this.physics.add.overlap(this.playerBulletGroup, this.enemyGroup, this.hitEnemy, null, this);
-		this.physics.add.overlap(this.player, this.enemyGroup, this.hitPlayer, null, this);
 	}
 
 	/**
@@ -201,19 +207,26 @@ export default class Game extends Phaser.Scene {
 
 	addFlyingGroup() {
 
-		this.spawnEnemyCounter = Phaser.Math.RND.between(5, 8) * 60; // spawn next group after x seconds
-
-		const randomId = Phaser.Math.RND.between(0, 11); // id to choose image in tiles.png
-		const randomCount = Phaser.Math.RND.between(5, 15); // number of enemies to spawn
-		const randomInterval = Phaser.Math.RND.between(8, 12) * 100; // delay between spawning of each enemy
-		const randomPath = Phaser.Math.RND.between(0, 3); // choose a path, a group follows the same path
-		const randomPower = Phaser.Math.RND.between(1, 4); // strength of the enemy to determine damage to inflict and selecting bullet image
-		const randomSpeed = Phaser.Math.RND.realInRange(0.0001, 0.001); // increment of pathSpeed in enemy
+		// spawn next group after x seconds
+		this.spawnEnemyCounter = Phaser.Math.RND.between(5, 8) * 60;
+		// id to choose image in tiles.png
+		const randomId = Phaser.Math.RND.between(0, 11);
+		// number of enemies to spawn
+		const randomCount = Phaser.Math.RND.between(5, 15);
+		// delay between spawning of each enemy
+		const randomInterval = Phaser.Math.RND.between(8, 12) * 100;
+		// choose a path, a group follows the same path
+		const randomPath = Phaser.Math.RND.between(0, 3);
+		// strength of the enemy to determine damage to inflict and selecting bullet image
+		const randomPower = Phaser.Math.RND.between(1, 4);
+		// increment of pathSpeed in enemy
+		const randomSpeed = Phaser.Math.RND.realInRange(0.0001, 0.001);
 
 		this.timedEvent = this.time.addEvent({
 			delay: randomInterval,
 			callback: this.addEnemy,
-			args: [randomId, randomPath, randomSpeed, randomPower], // parameters passed to addEnemy()
+			// parameters passed to addEnemy()
+			args: [randomId, randomPath, randomSpeed, randomPower],
 			callbackScope: this,
 			repeat: randomCount
 		});
@@ -227,12 +240,12 @@ export default class Game extends Phaser.Scene {
 
 		enemy.initEnemy(pathId, speed, power);
 
-        this.enemyGroup.add(enemy);
+        this.enemyLayer.add(enemy);
     }
 
 	removeBullet(bullet) {
 
-        this.playerBulletGroup.remove(bullet, true, true);
+        this.playerBulletLayer.remove(bullet, true, true);
     }
 
     fireEnemyBullet(x, y, power) {
@@ -242,17 +255,17 @@ export default class Game extends Phaser.Scene {
 
 		this.add.existing(bullet);
 
-        this.enemyBulletGroup.add(bullet);
+        this.enemyBulletLayer.add(bullet);
     }
 
     removeEnemyBullet(bullet) {
 
-        this.playerBulletGroup.remove(bullet, true, true);
+        this.playerBulletLayer.remove(bullet, true, true);
     }
 
 	removeEnemy(enemy) {
 
-        this.enemyGroup.remove(enemy, true, true);
+        this.enemyLayer.remove(enemy, true, true);
     }
 
 	gameOver() {
@@ -285,7 +298,7 @@ export default class Game extends Phaser.Scene {
 
 		this.add.existing(bullet);
 
-		this.playerBulletGroup.add(bullet);
+		this.playerBulletLayer.add(bullet);
 	}
 
 	initVariables() {

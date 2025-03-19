@@ -22,18 +22,6 @@
             "tilemapId": "aa27c6a5-cd96-4ff4-ad38-90bb45079daa"
         },
         {
-            "prefabId": "96477d04-c5f8-412b-b0a6-3074efb5e5dc",
-            "id": "0207c5d5-7947-4940-aaa7-6ce747ef1b74",
-            "unlock": [
-                "x",
-                "y"
-            ],
-            "label": "player",
-            "scope": "CLASS",
-            "x": 640,
-            "y": 620
-        },
-        {
             "type": "Layer",
             "id": "85547ddd-955b-40e1-b901-9a4f1e56911c",
             "label": "uiLayer",
@@ -89,6 +77,36 @@
                     "text": "Game Over"
                 }
             ]
+        },
+        {
+            "type": "Layer",
+            "id": "7dc25744-60fc-4625-b135-6054bea387c7",
+            "label": "enemyBulletLayer",
+            "scope": "CLASS"
+        },
+        {
+            "type": "Layer",
+            "id": "beffd261-134d-44f4-b721-3977067a813b",
+            "label": "enemyLayer",
+            "scope": "CLASS"
+        },
+        {
+            "type": "Layer",
+            "id": "529e9f09-b5c1-4b75-baff-23dd67d57a47",
+            "label": "playerBulletLayer",
+            "scope": "CLASS"
+        },
+        {
+            "prefabId": "96477d04-c5f8-412b-b0a6-3074efb5e5dc",
+            "id": "0207c5d5-7947-4940-aaa7-6ce747ef1b74",
+            "unlock": [
+                "x",
+                "y"
+            ],
+            "label": "player",
+            "scope": "CLASS",
+            "x": 640,
+            "y": 620
         }
     ],
     "plainObjects": [
@@ -122,6 +140,39 @@
                     "tileHeight": 32
                 }
             ]
+        },
+        {
+            "id": "f7d3e5b5-671f-4afa-a767-7aa28c02f738",
+            "type": "Collider",
+            "label": "player_vs_enemy_bullets",
+            "scope": "LOCAL",
+            "object1": "player",
+            "object2": "enemyBulletLayer.list",
+            "overlapOnly": true,
+            "collideCallback": "this.hitPlayer",
+            "callbackContext": "this"
+        },
+        {
+            "id": "f15bf972-2dfb-40cd-a45d-e9a6bb62a847",
+            "type": "Collider",
+            "label": "player_bullets_vs_enemies",
+            "scope": "LOCAL",
+            "object1": "playerBulletLayer.list",
+            "object2": "enemyLayer.list",
+            "overlapOnly": true,
+            "collideCallback": "this.hitEnemy",
+            "callbackContext": "this"
+        },
+        {
+            "id": "7058e345-0dde-47a0-b9ff-3a508f7da226",
+            "type": "Collider",
+            "label": "player_vs_enemies",
+            "scope": "LOCAL",
+            "object1": "player",
+            "object2": "enemyLayer.list",
+            "overlapOnly": true,
+            "collideCallback": "this.hitPlayer",
+            "callbackContext": "this"
         }
     ],
     "meta": {
