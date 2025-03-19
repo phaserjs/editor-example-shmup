@@ -5,7 +5,6 @@
 
 import Player from "../prefabs/Player.js";
 import UIText from "../prefabs/UIText.js";
-
 /* START-USER-IMPORTS */
 import EnemyBullet from "../prefabs/EnemyBullet.js";
 import EnemyFlying from "../prefabs/EnemyFlying.js";
@@ -109,21 +108,21 @@ export default class Game extends Phaser.Scene {
 		const tutorialText = new UIText(this, 640, 360);
 		tutorialText.visible = true;
 		tutorialText.text = "Press space to start";
-		tutorialText.setStyle({  });
+		tutorialText.setStyle({});
 		uiLayer.add(tutorialText);
 
 		// scoreText
 		const scoreText = new UIText(this, 20, 20);
 		scoreText.setOrigin(0, 0);
-		scoreText.text = "score: 0";
-		scoreText.setStyle({  });
+		scoreText.text = "Score: 0";
+		scoreText.setStyle({});
 		uiLayer.add(scoreText);
 
 		// gameOverText
 		const gameOverText = new UIText(this, 640, 360);
 		gameOverText.visible = false;
 		gameOverText.text = "Game Over";
-		gameOverText.setStyle({  });
+		gameOverText.setStyle({});
 		uiLayer.add(gameOverText);
 
 		// player_vs_enemy_bullets
@@ -225,7 +224,7 @@ export default class Game extends Phaser.Scene {
 		// increment of pathSpeed in enemy
 		const randomSpeed = Phaser.Math.RND.realInRange(0.0001, 0.001);
 
-		this.timedEvent = this.time.addEvent({
+		this.time.addEvent({
 			delay: randomInterval,
 			callback: this.addEnemy,
 			// parameters passed to addEnemy()
@@ -237,22 +236,22 @@ export default class Game extends Phaser.Scene {
 
 	addEnemy(shipId, pathId, speed, power) {
 
-        const enemy = new EnemyFlying(this);
+		const enemy = new EnemyFlying(this);
 
 		const points = new EnemyPaths(this).buildPoints(pathId);
 
 		enemy.initEnemy(points, speed, power, shipId);
 
-        this.enemyLayer.add(enemy);
-    }
+		this.enemyLayer.add(enemy);
+	}
 
-    fireEnemyBullet(x, y, power) {
+	fireEnemyBullet(x, y, power) {
 
-        const bullet = new EnemyBullet(this, x, y);
+		const bullet = new EnemyBullet(this, x, y);
 		bullet.setPower(power);
 
-        this.enemyBulletLayer.add(bullet);
-    }
+		this.enemyBulletLayer.add(bullet);
+	}
 
 	gameOver() {
 
@@ -260,20 +259,17 @@ export default class Game extends Phaser.Scene {
 
 		this.gameOverText.setVisible(true);
 
-		this.input.keyboard.on("keydown", e => {
+		this.cursors.space.once("down", (key, event) => {
 
-			if (e.keyCode === Phaser.Input.Keyboard.KeyCodes.SPACE) {
+			this.cameras.main.fadeOut(500, 0, 0, 0, (c, p) => {
 
-				this.cameras.main.fadeOut(500, 0, 0, 0, (c, p) => {
+				if (p === 1) {
 
-					if (p === 1) {
+					this.input.keyboard.off("keydown");
 
-						this.input.keyboard.off("keydown");
-						
-						this.scene.start("Game");
-					}
-				});
-			}
+					this.scene.start("Game");
+				}
+			});
 		});
 	}
 
