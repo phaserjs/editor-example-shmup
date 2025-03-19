@@ -53,7 +53,7 @@ export default class PlayerBullet extends Phaser.Physics.Arcade.Sprite {
 
     remove() {
 
-        this.scene.removeBullet(this);
+        this.destroy(true);
     }
 
 	/* END-USER-CODE */

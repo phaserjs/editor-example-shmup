@@ -28,7 +28,9 @@ export default class EnemyBullet extends Phaser.Physics.Arcade.Sprite {
 
 		this.power = power;
 
-		this.setVelocity(200 * power * 0.5);
+		this.setVelocityY(200 * power * 0.5);
+
+		this.setTexture(this.texture.key, 11 + power);
 	}
 
 	getPower() {
@@ -54,7 +56,7 @@ export default class EnemyBullet extends Phaser.Physics.Arcade.Sprite {
 
 	die() {
 
-		this.scene.removeEnemyBullet(this);
+		this.destroy(true);
 	}
 
 	/* END-USER-CODE */

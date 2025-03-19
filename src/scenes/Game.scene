@@ -23,6 +23,36 @@
         },
         {
             "type": "Layer",
+            "id": "7dc25744-60fc-4625-b135-6054bea387c7",
+            "label": "enemyBulletLayer",
+            "scope": "CLASS"
+        },
+        {
+            "type": "Layer",
+            "id": "beffd261-134d-44f4-b721-3977067a813b",
+            "label": "enemyLayer",
+            "scope": "CLASS"
+        },
+        {
+            "type": "Layer",
+            "id": "529e9f09-b5c1-4b75-baff-23dd67d57a47",
+            "label": "playerBulletLayer",
+            "scope": "CLASS"
+        },
+        {
+            "prefabId": "96477d04-c5f8-412b-b0a6-3074efb5e5dc",
+            "id": "0207c5d5-7947-4940-aaa7-6ce747ef1b74",
+            "unlock": [
+                "x",
+                "y"
+            ],
+            "label": "player",
+            "scope": "CLASS",
+            "x": 640,
+            "y": 620
+        },
+        {
+            "type": "Layer",
             "id": "85547ddd-955b-40e1-b901-9a4f1e56911c",
             "label": "uiLayer",
             "list": [
@@ -39,8 +69,8 @@
                     "scope": "CLASS",
                     "x": 640,
                     "y": 360,
-                    "visible": false,
-                    "text": "Tap to shoot!"
+                    "visible": true,
+                    "text": "Press space!"
                 },
                 {
                     "prefabId": "cf9e4651-6888-4bcc-85c8-36edfead8095",
@@ -77,36 +107,6 @@
                     "text": "Game Over"
                 }
             ]
-        },
-        {
-            "type": "Layer",
-            "id": "7dc25744-60fc-4625-b135-6054bea387c7",
-            "label": "enemyBulletLayer",
-            "scope": "CLASS"
-        },
-        {
-            "type": "Layer",
-            "id": "beffd261-134d-44f4-b721-3977067a813b",
-            "label": "enemyLayer",
-            "scope": "CLASS"
-        },
-        {
-            "type": "Layer",
-            "id": "529e9f09-b5c1-4b75-baff-23dd67d57a47",
-            "label": "playerBulletLayer",
-            "scope": "CLASS"
-        },
-        {
-            "prefabId": "96477d04-c5f8-412b-b0a6-3074efb5e5dc",
-            "id": "0207c5d5-7947-4940-aaa7-6ce747ef1b74",
-            "unlock": [
-                "x",
-                "y"
-            ],
-            "label": "player",
-            "scope": "CLASS",
-            "x": 640,
-            "y": 620
         }
     ],
     "plainObjects": [

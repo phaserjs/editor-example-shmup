@@ -1,4 +1,4 @@
-import Game from "./Game.js";
+import Game from "./scenes/Game.js";
 import Preload from "./scenes/Preload.js";
 
 window.addEventListener('load', function () {
@@ -12,6 +12,8 @@ window.addEventListener('load', function () {
 			mode: Phaser.Scale.FIT,
 			autoCenter: Phaser.Scale.CENTER_BOTH
 		},
+		pixelArt: true,
+		roundPixels: true,
 		physics: {
 			default: "arcade",
 			arcade: {

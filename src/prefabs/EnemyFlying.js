@@ -34,23 +34,31 @@ export default class EnemyFlying extends Phaser.Physics.Arcade.Sprite {
 	health = 1;
 
 	// minimum fire rate
-    fireCounterMin = 100;
+	fireCounterMin = 100;
 
 	// maximum fire rate 
-    fireCounterMax = 300;
+	fireCounterMax = 300;
 
-    fireCounter;
+	fireCounter;
 
 	// enemy strength
-    power = 1;
+	power = 1;
 
-	initEnemy(pathId, speed, power) {
+	initEnemy(pathId, speed, power, shipId) {
+
+		// choose path to follow
+		this.initPath(pathId, speed); 
 
 		this.power = power;
 
-		this.fireCounter = Phaser.Math.RND.between(this.fireCounterMin, this.fireCounterMax); // random firing interval
+		this.setTexture(this.texture.key, 12 + shipId);
 
-		this.initPath(pathId, speed); // choose path to follow
+		this.fireCounter = Phaser.Math.RND.between(this.fireCounterMin, this.fireCounterMax); // random firing interval
+	}
+
+	getPower() {
+
+		return this.power;
 	}
 
 	preUpdate(time, delta) {
@@ -101,7 +109,12 @@ export default class EnemyFlying extends Phaser.Physics.Arcade.Sprite {
 
 		this.scene.addExplosion(this.x, this.y);
 
-		this.scene.removeEnemy(this);
+		this.remove();
+	}
+
+	remove() {
+
+		this.destroy(true);
 	}
 
 	fire() {
@@ -134,11 +147,6 @@ export default class EnemyFlying extends Phaser.Physics.Arcade.Sprite {
 	getPower() {
 
 		return this.power;
-	}
-
-	remove() {
-
-		this.scene.removeEnemy(this);
 	}
 
 	/* END-USER-CODE */
